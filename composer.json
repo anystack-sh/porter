@@ -1,0 +1,53 @@
+{
+    "name": "anystack-sh/porter",
+    "description": "Spin up your development background processes with ease.",
+    "keywords": ["console", "cli", "background-processes", "php", "laravel", "supervisor", "laravel-package", "productivity", "development-workflow", "developer-tools"],
+    "homepage": "https://anystack.sh",
+    "type": "project",
+    "license": "MIT",
+    "support": {
+        "issues": "https://github.com/anystack-sh/porter/issues",
+        "source": "https://github.com/anystack-sh/porter"
+    },
+    "authors": [
+        {
+            "name": "Philo Hermans",
+            "email": "philo@anystack.sh"
+        }
+    ],
+    "require": {
+        "php": "^8.0"
+    },
+    "require-dev": {
+        "laravel/pint": "^1.2",
+        "mockery/mockery": "^1.4.4",
+        "pestphp/pest": "^1.21.3",
+        "laravel-zero/framework": "^9.2",
+        "nunomaduro/termwind": "^1.14",
+        "phpxmlrpc/phpxmlrpc": "^4.9",
+        "symfony/yaml": "^6.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/",
+            "Database\\Factories\\": "database/factories/",
+            "Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "preferred-install": "dist",
+        "sort-packages": true,
+        "optimize-autoloader": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "bin": ["builds/porter"]
+}

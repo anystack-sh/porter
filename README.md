@@ -1,0 +1,114 @@
+<p align="center">
+<a href="https://packagist.org/packages/anystack-sh/porter"><img src="https://img.shields.io/packagist/dt/anystack-sh/porter" alt="Total Downloads"></a>
+<a href="https://packagist.org/packages/anystack-sh/porter"><img src="https://img.shields.io/packagist/v/anystack-sh/porter" alt="Latest Stable Version"></a>
+<a href="https://packagist.org/packages/anystack-sh/porter"><img src="https://img.shields.io/packagist/l/anystack-sh/porter" alt="License"></a>
+</p>
+
+## About Porter
+
+Porter is a command-line interface (CLI) tool that makes it easy to run background services by adding a few lines to a configuration file.
+These services are managed by Supervisord, a process control system that ensures that all processes are kept up and running. 
+With Porter, you don't have to manually start and manage background services in multiple terminal tabs. 
+Instead, you can simply use the `porter` command to manage all of your services in a single place.
+
+### Installation
+
+To install Porter, you can use `composer` or download the build manually from this repository.
+
+```shell
+composer global require anystack-sh/porter
+```
+
+#### Requirements
+To use Porter you must install `supervisord`:
+- macOS: `brew install supervisor`
+- Linux: `apt install supervisor`
+
+### Add your first project
+In your terminal navigate to your project and run `porter add`:
+
+```shell
+~/Developer/anystack: $ porter add
+
+Creating porter.yml boilerplate: ✔
+Adding /Users/Developer/anystack: ✔
+Restarting Porter: ✔
+```
+
+A new `porter.yml` has been created. This file contains all the services you want to run in the background, for example:
+
+```yaml
+services:
+  - name: Queue
+    command: php artisan horizon
+    restartInMinutes: 1
+    
+
+  - name: Vite
+    command: npm run dev
+
+  - name: Octane
+    command: php artisan octane:start --port=8000 --no-interaction
+```
+
+The following properties are available per command:
+
+| Property         | Description                                              | Required |
+|------------------|----------------------------------------------------------|----------|
+| name             | Shortname that describes your service.                   | Yes      |
+| command          | The command to run relative to the root of your project. | Yes      |
+| restartInMinutes | After how many minutes the services should restart.      | No       | 
+
+If you have made changes to your `porter.yml` you can use the `porter restart` command to apply your changes.
+
+### Monitoring services
+To monitor your services you can use the `porter status` command.
+
+```shell
+~/Developer/anystack: $ porter status
++----------+-----------------+---------+---------------------------+
+| App      | Name            | Status  | Description               |
++----------+-----------------+---------+---------------------------+
+| anystack | anystack-octane | RUNNING | pid 41277, uptime 0:03:29 |
+| anystack | anystack-queue  | RUNNING | pid 41275, uptime 0:03:29 |
+| anystack | anystack-vite   | RUNNING | pid 41276, uptime 0:03:29 |
++----------+-----------------+---------+---------------------------+
+```
+
+### Tail service logs
+You can tail one or more services (unified) using the `porter tail` command. This command is context-aware and will automatically ask which services do you want to tail:
+
+```shell
+~/Developer/anystack: $ porter tail
+
+ Which service do you want to tail?:
+  [0] anystack-octane
+  [1] anystack-queue
+  [2] anystack-vite
+ > 0,1
+ 
+ Use CTRL+C to stop tailing.
+ 
+ Horizon started successfully.
+ 
+ INFO  Server running…
+ Local: http://127.0.0.1:8000
+ 200    GET / ... 33.38 mb 79.10 ms
+ ```
+
+### All available commands
+
+| Command          | Description                                 |
+|------------------|---------------------------------------------|
+| `porter add`     | Add current directory as a new application. |
+| `porter remove`  | Remove current application services.        |
+| `porter start`   | Start all services.                         |
+| `porter restart` | Restart all services.                       |
+| `porter stop`    | Stop all services.                          |
+| `porter tail`    | Tail service logs.                          |
+
+### Brought to you by Anystack
+Anystack is the all-in-one product platform that helps you make a living by writing code. Push your code to GitHub, and we will take care of everything else.  [Start your adventure today](https://anystack.sh?utm_source=github&utm_campaign=porter&utm_medium=repository). 
+
+## License
+Porter is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
