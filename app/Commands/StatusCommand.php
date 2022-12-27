@@ -35,6 +35,8 @@ class StatusCommand extends Command
      */
     public function handle(SupervisordRepository $repository)
     {
+        $this->ensurePorterIsRunning();
+
         $this->table(
             ['App', 'Name', 'Status', 'Description'],
             $repository->getAllProcessInfo()

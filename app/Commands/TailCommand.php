@@ -30,6 +30,8 @@ class TailCommand extends Command
      */
     public function handle(ConfigRepository $configRepository, SupervisordRepository $supervisordRepository)
     {
+        $this->ensurePorterIsRunning();
+
         $app = $this->resolveAppToTail($configRepository);
 
         $appServices = $supervisordRepository->getAllProcessInfo()->where('group', $app);
