@@ -44,14 +44,27 @@ class SupervisordRepository
         $this->client->password = 'secret';
     }
 
+    public function isSupervisordRunning(): bool
+    {
+        try {
+            return $this->call('getState')['statename'] ?? false;
+        } catch (SupervisordConnectionRefusedException $exception) {
+            return false;
+        }
+    }
+
     public function reloadConfig()
     {
         return $this->call('reloadConfig');
     }
 
-    public function restart()
+    public function restartSupervisord()
     {
-        return $this->call('restart');
+        if ($this->isSupervisordRunning()) {
+            return $this->call('restart');
+        }
+
+        return $this->startSupervisord();
     }
 
     public function getAllProcessInfo()
@@ -78,7 +91,6 @@ class SupervisordRepository
 
             $this->call('startProcess', $name);
         } catch (SupervisordNotRunningException $e) {
-            dd('fail');
         }
     }
 

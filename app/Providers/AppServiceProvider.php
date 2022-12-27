@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Repositories\SupervisordRepository;
+use Illuminate\Console\Command;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -13,7 +15,17 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        Command::macro('ensurePorterIsRunning', function () {
+            $supervisord = app(SupervisordRepository::class);
+
+            if ($supervisord->isSupervisordRunning() === false) {
+                if ($this->confirm('Porter must be running to use this command. Do you want to start Porter?', true)) {
+                    return $supervisord->startSupervisord();
+                }
+
+                exit;
+            }
+        });
     }
 
     /**

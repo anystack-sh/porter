@@ -31,6 +31,6 @@ class RestartCommand extends Command
     {
         $configRepository->writeSupervisordConfiguration();
 
-        $this->task('Restarting Porter', fn () => $supervisorRepository->restart());
+        $this->task('Restarting Porter', fn () => $supervisorRepository->restartSupervisord());
     }
 }
