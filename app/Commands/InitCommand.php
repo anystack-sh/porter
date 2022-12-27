@@ -33,6 +33,7 @@ class InitCommand extends Command
 
             return;
         }
+
         if ($this->confirm(sprintf('Create porter.yml in %s?', getcwd()), true)) {
             $this->task('Creating porter.yml boilerplate', function () use ($configRepository) {
                 $configRepository->createStub();
