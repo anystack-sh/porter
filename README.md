@@ -25,7 +25,19 @@ To use Porter you must install `supervisord`:
 - Linux: `apt install supervisor`
 
 ### Add your first project
-In your terminal navigate to your project and run `porter add`:
+In your terminal navigate to your project and run `porter init` to create a boilerplate `porter.yml`:
+
+```shell
+~/Developer/anystack: $ porter init
+
+ Create porter.yml in /Users/Developer/anystack? (yes/no) [yes]:
+ > yes
+
+Creating porter.yml boilerplate: ✔
+Run "porter add" to add your product and start your services.
+```
+
+Modify `porter.yml` and add the services you want to run. In your terminal navigate to your project and run `porter add`:
 
 ```shell
 ~/Developer/anystack: $ porter add

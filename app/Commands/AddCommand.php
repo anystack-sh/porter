@@ -28,15 +28,7 @@ class AddCommand extends Command
      */
     public function handle(ConfigRepository $configRepository)
     {
-        if (file_exists('porter.yml') === false) {
-            $this->task('Creating porter.yml boilerplate', function () use ($configRepository) {
-                $configRepository->createStub();
-
-                return true;
-            });
-        }
-
-        $this->task(sprintf('Adding %s', getcwd()), function () use ($configRepository) {
+        $this->task(sprintf('Adding %s/porter.yml', getcwd()), function () use ($configRepository) {
             $configRepository->addApplication(getcwd());
 
             return true;
