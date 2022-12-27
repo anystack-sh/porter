@@ -3,7 +3,6 @@
 namespace App\Commands;
 
 use App\Repositories\ConfigRepository;
-use Illuminate\Console\Scheduling\Schedule;
 use LaravelZero\Framework\Commands\Command;
 
 class InitCommand extends Command
@@ -31,9 +30,10 @@ class InitCommand extends Command
     {
         if (file_exists('porter.yml') === true) {
             $this->comment('Porter.yml already exists, skipping...');
+
             return;
         }
-        if($this->confirm(sprintf('Create porter.yml in %s?', getcwd()), true)) {
+        if ($this->confirm(sprintf('Create porter.yml in %s?', getcwd()), true)) {
             $this->task('Creating porter.yml boilerplate', function () use ($configRepository) {
                 $configRepository->createStub();
 
