@@ -34,7 +34,7 @@ class TailCommand extends Command
 
         $app = $this->resolveAppToTail($configRepository);
 
-        $appServices = $supervisordRepository->getAllProcessInfo()->where('group', $app);
+        $appServices = $supervisordRepository->getAllProcessInfo()->where('group', str($app)->slug());
 
         if ($this->option('all') === false) {
             $servicesToTail = $this->choice(
