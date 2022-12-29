@@ -24,6 +24,9 @@ To use Porter you must install `supervisord`:
 - macOS: `brew install supervisor`
 - Linux: `apt install supervisor`
 
+If you want to use the watch feature to restart services when files change you will also need to install:
+- chokidar: `npm install --global chokidar`
+
 ### Add your first project
 In your terminal navigate to your project and run `porter init` to create a boilerplate `porter.yml`:
 
@@ -42,7 +45,6 @@ Modify `porter.yml` and add the services you want to run. In your terminal navig
 ```shell
 ~/Developer/anystack: $ porter add
 
-Creating porter.yml boilerplate: ✔
 Adding /Users/Developer/anystack: ✔
 Restarting Porter: ✔
 ```
@@ -53,23 +55,32 @@ A new `porter.yml` has been created. This file contains all the services you wan
 services:
   - name: Queue
     command: php artisan horizon
-    restartInMinutes: 1
+    restart:
+        watch:
+            - app/Jobs
+            - app/Mail/WelcomEmail.php
     
-
   - name: Vite
     command: npm run dev
 
   - name: Octane
     command: php artisan octane:start --port=8000 --no-interaction
+
+  - name: Stripe
+    command: stripe listen --forward-to localhost:8000/webhooks/stripe
+    restart:
+      minutes: 5
 ```
 
 The following properties are available per command:
 
-| Property         | Description                                              | Required |
-|------------------|----------------------------------------------------------|----------|
-| name             | Shortname that describes your service.                   | Yes      |
-| command          | The command to run relative to the root of your project. | Yes      |
-| restartInMinutes | After how many minutes the services should restart.      | No       | 
+| Property  | Description                                              | Required |
+|-----------|----------------------------------------------------------|----------|
+| name      | Shortname that describes your service.                   | Yes      |
+| command   | The command to run relative to the root of your project. | Yes      |
+| restart   |                                                          | No       | 
+| - minutes | After how many minutes the service should restart.       | No       | 
+| - watch   | Restart service if files or directories are modified.    | No       | 
 
 If you have made changes to your `porter.yml` you can use the `porter restart` command to apply your changes.
 
@@ -115,7 +126,7 @@ You can tail one or more services (unified) using the `porter tail` command. Thi
 | `porter add`     | Add current directory as a new application. |
 | `porter remove`  | Remove current application services.        |
 | `porter start`   | Start all services.                         |
-| `porter restart` | Restart all services.                       |
+| `porter restart` | Restart one or multiple services.           |
 | `porter stop`    | Stop all services.                          |
 | `porter tail`    | Tail service logs.                          |
 

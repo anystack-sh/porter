@@ -38,6 +38,7 @@ class ConfigRepository
     public function getApplicationConfigurations(): Collection
     {
         $this->initializeConfiguration();
+        $this->initializeFileWatcher();
         $this->initializeLogDirectory();
 
         return $this->readJsonConfig('apps.json')
@@ -98,6 +99,13 @@ class ConfigRepository
     {
         if (Storage::exists('logs') === false) {
             Storage::makeDirectory('logs');
+        }
+    }
+
+    private function initializeFileWatcher()
+    {
+        if (Storage::exists('file-watcher.js') === false) {
+            Storage::put('file-watcher.js', file_get_contents(config_path('stubs/file-watcher.js')));
         }
     }
 
