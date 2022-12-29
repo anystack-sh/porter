@@ -30,7 +30,6 @@ class TaskSchedulerCommand extends Command
      */
     public function handle()
     {
-        //
     }
 
     /**
@@ -41,13 +40,14 @@ class TaskSchedulerCommand extends Command
      */
     public function schedule(Schedule $schedule): void
     {
+        // Todo: Make this more readable
         app(ConfigRepository::class)->getApplicationConfigurations()->filter(function ($app) use ($schedule) {
             return collect($app['config']['services'] ?? [])
-                ->where('restartInMinutes', '>', 0)
+                ->where('restart.minutes', '>', 0)
                 ->each(function ($command) use ($schedule) {
                     $schedule->call(function () use ($command) {
                         $this->app->make(SupervisordRepository::class)->restartProcess($command['process_name']);
-                    })->cron("*/{$command['restartInMinutes']} * * * *");
+                    })->cron("*/{$command['restart']['minutes']} * * * *");
                 });
         });
     }
