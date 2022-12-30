@@ -58,11 +58,20 @@ class TailCommand extends Command
     private function resolveAppToTail(ConfigRepository $config): mixed
     {
         return $this->argument('app') ??
-            $config->apps->firstWhere('dir', getcwd())['name'] ??
-            $this->choice(
-                'Which app do you want to tail?',
-                $config->apps->pluck('name')->toArray(),
-            );
+               $this->getAppFromCwd($config) ??
+               $this->choice(
+                   'Which app do you want to tail?',
+                   $config->apps->pluck('name')
+                                ->map(fn ($name) => str($name)->slug())
+                                ->toArray(),
+               );
+    }
+
+    private function getAppFromCwd(ConfigRepository $config): ?string
+    {
+        $app = $config->apps->firstWhere('dir', getcwd())['name'] ?? null;
+
+        return $app !== null ? str($app)->slug() : null;
     }
 
     private function tail(Collection $files)
