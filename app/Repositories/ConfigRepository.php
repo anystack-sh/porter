@@ -153,12 +153,8 @@ class ConfigRepository
                 $errorLogFilename = $programName->append('-error.log');
 
                 return str(file_get_contents(config_path('stubs/program.conf')))
-                    ->when(
-                        isset($service['directory']),
-                        fn ($str) => $str->replace('$DIR', $service['directory']),
-                        fn ($str) => $str->replace('$DIR', $app['dir']),
-                    )
                     ->replace('$NAME', $programName)
+                    ->replace('$DIR', $service['directory'] ?? $app['dir'])
                     ->replace('$COMMAND', $service['command'])
                     ->replace('$LOGFILE', $this->storagePath("logs/{$logFilename}"))
                     ->replace('$ERRORFILE', $this->storagePath("logs/{$errorLogFilename}"))
