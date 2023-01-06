@@ -61,6 +61,7 @@ services:
             - app/Mail/WelcomEmail.php
     
   - name: Vite
+    directory: Users/developer/anystack/front-end
     command: npm run dev
 
   - name: Octane
@@ -77,8 +78,9 @@ The following properties are available per command:
 | Property  | Description                                              | Required |
 |-----------|----------------------------------------------------------|----------|
 | name      | Shortname that describes your service.                   | Yes      |
-| command   | The command to run relative to the root of your project. | Yes      |
-| restart   |                                                          | No       | 
+| directory   | Set the working directory, defaults to porter.yml directory. | No  |
+| command   | The command to run relative to the root of your project or custom defined directory. | Yes      |
+| restart   |                                                          |          | 
 | - minutes | After how many minutes the service should restart.       | No       | 
 | - watch   | Restart service if files or directories are modified.    | No       | 
 
