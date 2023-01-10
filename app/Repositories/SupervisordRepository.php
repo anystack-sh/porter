@@ -129,7 +129,7 @@ class SupervisordRepository
         exec($supervisordPath.' -c '.Storage::disk()->path('supervisord.conf'));
     }
 
-    public function stopSupervisord()
+    public function stopSupervisord($force = false)
     {
         if (Storage::exists('supervisord.pid') === false) {
             return true;
@@ -138,9 +138,19 @@ class SupervisordRepository
         posix_kill(Storage::get('supervisord.pid'), SIGTERM);
 
         while (true) {
-            if (file_exists(Storage::path('supervisord.pid')) === false) {
+            try {
+                $this->getAllProcessInfo();
+                sleep(1);
+            } catch (SupervisordConnectionRefusedException $e) {
+                // Shutdown complete
                 break;
+            } catch (SupervisordShutdownStateException $e) {
+                // Shutting down
             }
+        }
+
+        if($force) {
+            Storage::delete('supervisord.pid');
         }
 
         return true;

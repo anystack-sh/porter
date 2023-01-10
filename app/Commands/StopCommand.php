@@ -12,7 +12,7 @@ class StopCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'stop';
+    protected $signature = 'stop {--force}';
 
     /**
      * The description of the command.
@@ -29,7 +29,7 @@ class StopCommand extends Command
     public function handle(SupervisordRepository $repository)
     {
         $this->task('Stopping services', function () use ($repository) {
-            return $repository->stopSupervisord();
+            return $repository->stopSupervisord($this->option('force'));
         });
     }
 }
