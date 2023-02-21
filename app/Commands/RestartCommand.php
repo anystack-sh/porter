@@ -16,7 +16,7 @@ class RestartCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'restart';
+    protected $signature = 'restart {name?}';
 
     /**
      * The description of the command.
@@ -36,12 +36,22 @@ class RestartCommand extends Command
 
         $configRepository->writeSupervisordConfiguration();
 
-        $processes = $this->choice('Which service would you like to restart?',
-            $supervisorRepository->getAllProcessInfo()
-                ->map(fn ($process) => $process['group'].':'.$process['name'])
-                ->prepend('all')
-                ->reject(fn ($val) => in_array($val, $this->hiddenProcesses, true))->toArray(),
-            null, null, true);
+        $availableProcesses = $supervisorRepository->getAllProcessInfo()
+            ->map(fn ($process) => $process['group'].':'.$process['name'])
+            ->prepend('all')
+            ->reject(fn ($val) => in_array($val, $this->hiddenProcesses, true));
+
+        if ($name = $this->argument('name')) {
+            $processes = $availableProcesses->filter(function ($process) use ($name) {
+                return $process === $name;
+            })->toArray();
+        } else {
+            $processes = $this->choice(
+                'Which service would you like to restart?',
+                $availableProcesses->toArray(),
+                null, null, true
+            );
+        }
 
         if (in_array('all', $processes, true)) {
             $this->task('Restarting Porter', fn () => $supervisorRepository->restartSupervisord());
