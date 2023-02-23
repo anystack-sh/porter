@@ -34,6 +34,6 @@ class RemoveCommand extends Command
             return true;
         });
 
-        $this->call(RestartCommand::class);
+        $this->call(RestartCommand::class, ['name' => 'all']);
     }
 }
