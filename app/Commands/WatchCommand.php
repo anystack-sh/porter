@@ -67,6 +67,8 @@ class WatchCommand extends Command
                 );
 
                 return 1;
+            } else {
+                usleep(0.2 * 1000000);
             }
         }
     }
