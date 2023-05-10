@@ -55,6 +55,7 @@ A new `porter.yml` has been created. This file contains all the services you wan
 services:
   - name: Queue
     command: php artisan horizon
+    processes: 3 # Optional, number of parallel processes. Defaults to 1
     restart:
         watch:
             - app/Jobs
@@ -75,14 +76,15 @@ services:
 
 The following properties are available per command:
 
-| Property  | Description                                              | Required |
-|-----------|----------------------------------------------------------|----------|
-| name      | Shortname that describes your service.                   | Yes      |
-| directory   | Set the working directory, defaults to porter.yml directory. | No  |
+| Property  | Description                                                                          | Required |
+|-----------|--------------------------------------------------------------------------------------|----------|
+| name      | Shortname that describes your service.                                               | Yes      |
+| directory   | Set the working directory, defaults to porter.yml directory.                         | No  |
 | command   | The command to run relative to the root of your project or custom defined directory. | Yes      |
-| restart   |                                                          |          | 
-| - minutes | After how many minutes the service should restart.       | No       | 
-| - watch   | Restart service if files or directories are modified.    | No       | 
+| restart   |                                                                                      |          | 
+| - minutes | After how many minutes the service should restart.                                   | No       | 
+| - watch   | Restart service if files or directories are modified.                                | No       | 
+| processes   | Set the number of parallel processes for the service. Defaults to 1.                 | No  |
 
 If you have made changes to your `porter.yml` you can use the `porter restart` command to apply your changes.
 
