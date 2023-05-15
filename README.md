@@ -64,6 +64,8 @@ services:
   - name: Vite
     directory: Users/developer/anystack/front-end
     command: npm run dev
+    environment:
+        - FOO=BAR
 
   - name: Octane
     command: php artisan octane:start --port=8000 --no-interaction
@@ -76,15 +78,16 @@ services:
 
 The following properties are available per command:
 
-| Property  | Description                                                                          | Required |
-|-----------|--------------------------------------------------------------------------------------|----------|
-| name      | Shortname that describes your service.                                               | Yes      |
+| Property    | Description                                                                          | Required |
+|-------------|--------------------------------------------------------------------------------------|----------|
+| name        | Shortname that describes your service.                                               | Yes      |
 | directory   | Set the working directory, defaults to porter.yml directory.                         | No  |
-| command   | The command to run relative to the root of your project or custom defined directory. | Yes      |
-| restart   |                                                                                      |          | 
-| - minutes | After how many minutes the service should restart.                                   | No       | 
-| - watch   | Restart service if files or directories are modified.                                | No       | 
+| command     | The command to run relative to the root of your project or custom defined directory. | Yes      |
+| restart     |                                                                                      |          | 
+| - minutes   | After how many minutes the service should restart.                                   | No       | 
+| - watch     | Restart service if files or directories are modified.                                | No       | 
 | processes   | Set the number of parallel processes for the service. Defaults to 1.                 | No  |
+| environment | Set custom environment variables                                                     | No  |
 
 If you have made changes to your `porter.yml` you can use the `porter restart` command to apply your changes.
 
