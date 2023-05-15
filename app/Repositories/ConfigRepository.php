@@ -158,6 +158,7 @@ class ConfigRepository
                     ->replace('$COMMAND', $service['command'])
                     ->replace('$LOGFILE', $this->storagePath("logs/{$logFilename}"))
                     ->replace('$ERRORFILE', $this->storagePath("logs/{$errorLogFilename}"))
+                    ->replace('$NUMPROCS', $service['processes'] ?? 1)
                     ->toString();
             })->implode(PHP_EOL).str(file_get_contents(config_path('stubs/group.conf')))
                     ->replace('$NAME', str($app['name'])->slug())
