@@ -65,7 +65,7 @@ services:
     directory: Users/developer/anystack/front-end
     command: npm run dev
     environment:
-        - FOO=BAR
+        FOO: "BAR"
 
   - name: Octane
     command: php artisan octane:start --port=8000 --no-interaction

@@ -159,11 +159,12 @@ class ConfigRepository
                     ->replace('$LOGFILE', $this->storagePath("logs/{$logFilename}"))
                     ->replace('$ERRORFILE', $this->storagePath("logs/{$errorLogFilename}"))
                     ->replace('$NUMPROCS', $service['processes'] ?? 1)
-                    ->replace('$ENVIRONMENT', collect($service['environment'] ?? [])->mapWithKeys(fn($env) => $env)->map(fn($value, $key) => "{$key}={$value}")->implode(','))
+                    ->replace('$ENVIRONMENT', collect($service['environment'] ?? [])->map(fn($value, $key) => "{$key}={$value}")->implode(','))
                     ->toString();
             })->implode(PHP_EOL).str(file_get_contents(config_path('stubs/group.conf')))
                     ->replace('$NAME', str($app['name'])->slug())
                     ->replace('$PROGRAMS', $programs);
+
         })->implode(PHP_EOL);
     }
 
