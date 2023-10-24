@@ -88,7 +88,7 @@ class TailCommand extends Command
                 $line = fgets($$name);
 
                 if ($line !== false) {
-                    $this->line($line);
+                    $this->getOutput()->write($line);
                 } else {
                     usleep(0.1 * 1000000);
                     fseek($$name, ftell($$name));
