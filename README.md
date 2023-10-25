@@ -106,7 +106,10 @@ To monitor your services you can use the `porter status` command.
 ```
 
 ### Tail service logs
-You can tail one or more services (unified) using the `porter tail` command. This command is context-aware and will automatically ask which services do you want to tail:
+
+#### Basic tail usage
+You can tail one or more services (unified) using the `porter tail` command.
+This command is context-aware and will automatically ask which services you want to tail:
 
 ```shell
 ~/Developer/anystack: $ porter tail
@@ -125,6 +128,58 @@ You can tail one or more services (unified) using the `porter tail` command. Thi
  Local: http://127.0.0.1:8000
  200    GET / ... 33.38 mb 79.10 ms
  ```
+
+#### Tail all available services
+
+To automatically tail all available services, pass the `--all` option:
+
+```shell
+~/Developer/anystack: $ porter tail --all
+ Use CTRL+C to stop tailing.
+ 
+ Horizon started successfully.
+ 
+ INFO  Server running…
+ Local: http://127.0.0.1:8000
+ 200    GET / ... 33.38 mb 79.10 ms
+```
+
+#### Tail one or more services
+
+You can specify one or more services that you would like to tail by passing
+the `--services` option with a comma-separated list of service indexes or service names.
+You can find the index and name of each available service by running `porter tail` with no arguments:
+
+```shell
+~/Developer/anystack: $ porter tail
+
+ Which service do you want to tail?:
+  [0] anystack-octane
+  [1] anystack-queue
+  [2] anystack-vite
+```
+
+The following examples reference the service names and indexes found above:
+
+```shell
+~/Developer/anystack: $ porter tail --services=0,2
+```
+
+```shell
+~/Developer/anystack: $ porter tail --services=anystack-octane,anystack-vite
+```
+
+_The above two commands are functionally equivalent._
+
+```shell
+~/Developer/anystack: $ porter tail --services=1
+```
+
+```shell
+~/Developer/anystack: $ porter tail --services=anystack-queue
+```
+
+_The above two commands are functionally equivalent._
 
 ### All available commands
 
