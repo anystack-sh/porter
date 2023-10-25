@@ -5,7 +5,6 @@ namespace App\Commands;
 use App\Repositories\ConfigRepository;
 use App\Repositories\SupervisordRepository;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Str;
 use LaravelZero\Framework\Commands\Command;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
 
@@ -93,7 +92,7 @@ class TailCommand extends Command
             return null;
         }
 
-        return Str::of($services)
+        return str($services)
             ->explode(',')
             ->map(function ($service) use ($appServices) {
                 if (is_numeric($service) && isset($appServices[$service])) {
