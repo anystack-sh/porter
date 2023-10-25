@@ -109,6 +109,7 @@ To monitor your services you can use the `porter status` command.
 
 #### Basic tail usage
 You can tail one or more services (unified) using the `porter tail` command.
+
 This command is context-aware and will automatically ask which services you want to tail:
 
 ```shell
@@ -146,8 +147,9 @@ To automatically tail all available services, pass the `--all` option:
 
 #### Tail one or more services
 
-You can specify one or more services that you would like to tail by passing
+You can specify one or more services that you would like to tail by passing  
 the `--services` option with a comma-separated list of service indexes or service names.
+
 You can find the index and name of each available service by running `porter tail` with no arguments:
 
 ```shell
