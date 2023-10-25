@@ -44,11 +44,14 @@ class TailCommand extends Command
             $servicesToTail = $this->resolveServicesToTail($appServices);
         }
 
+        $this->comment('Tailing services:');
+        $this->table([], collect($servicesToTail ?? $appServices->pluck('name'))
+            ->map(fn ($service) => [$service])->toArray());
+        $this->comment('Use CTRL+C to stop tailing.');
+
         $files = $appServices
             ->when(isset($servicesToTail), fn ($c) => $c->whereIn('name', $servicesToTail))
             ->pluck('stdout_logfile');
-
-        $this->comment('Use CTRL+C to stop tailing.');
 
         $this->tail($files);
     }
