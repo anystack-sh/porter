@@ -19,7 +19,7 @@ class TailCommand extends Command
     protected $signature = 'tail
                             {app?}
                             {--services= : Comma-separated list of service indexes (e.g. 0,1) or service names to tail}
-                            {--all}';
+                            {--all : Tail all available services (overrides --services option)}';
 
     /**
      * The description of the command.
